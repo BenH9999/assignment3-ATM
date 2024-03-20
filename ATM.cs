@@ -191,14 +191,6 @@ namespace assignment3_ATM
             return null;
         }
 
-        private void dispBalance()
-        {
-            if (this.activeAccount != null)
-            {
-                
-            }
-        }
-
         private int promptForPin()
         {
             int pinNumberEntered = form.getCurrentInput();

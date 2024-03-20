@@ -21,6 +21,7 @@ namespace assignment3_ATM
         public ATMForm()
         {
             InitializeComponent();
+            addControls();
 
             this.lblExtra.Text = "";
             this.lblInput.Text = "";
@@ -31,38 +32,6 @@ namespace assignment3_ATM
 
             isEnterButtonClicked = false;
             isCancelButtonClicked = false;
-
-            currentButtonNo = 9;
-            for(int y = 0; y < 3; y++)
-            {
-                for(int x = 0; x < 3; x++)
-                {
-                    numberButtons[x, y] = new Button();
-                    numberButtons[x, y].SetBounds((x + 1) * cell_size, (y + 1) * cell_size, cell_size, cell_size);
-                    numberButtons[x, y].Text = currentButtonNo.ToString();
-                    numberButtons[x, y].Click += new EventHandler(this.numberButtonClicked);
-                    Controls.Add(numberButtons[x, y]);
-                    currentButtonNo--;
-                }
-            }
-            zeroButton = new Button();
-            zeroButton.SetBounds(1 * cell_size, 4 * cell_size, cell_size, cell_size);
-            zeroButton.Text= "0";
-            zeroButton.Click+= new EventHandler(this.numberButtonClicked);
-            Controls.Add(zeroButton);
-
-            enterButton= new Button();
-            enterButton.SetBounds(2 * cell_size,4*cell_size, cell_size, cell_size);
-            enterButton.Text = "Enter";
-            enterButton.Click += new EventHandler(this.enterButtonClicked);
-            enterButton.BackColor= Color.Green;
-            Controls.Add(enterButton);
-
-            cancelButton= new Button();
-            cancelButton.SetBounds(3*cell_size,4*cell_size,cell_size,cell_size);
-            cancelButton.Text= "Cancel";
-            cancelButton.BackColor= Color.Red;
-            Controls.Add(cancelButton);
 
             ac[0] = new Account(300, 1111, 111111);
             ac[1] = new Account(750, 2222, 222222);
@@ -179,6 +148,41 @@ namespace assignment3_ATM
             {
                 lblInstruction4.Text = text;
             });
+        }
+
+        private void addControls()
+        {
+            currentButtonNo = 9;
+            for (int y = 0; y < 3; y++)
+            {
+                for (int x = 0; x < 3; x++)
+                {
+                    numberButtons[x, y] = new Button();
+                    numberButtons[x, y].SetBounds((x + 1) * cell_size, (y + 1) * cell_size, cell_size, cell_size);
+                    numberButtons[x, y].Text = currentButtonNo.ToString();
+                    numberButtons[x, y].Click += new EventHandler(this.numberButtonClicked);
+                    Controls.Add(numberButtons[x, y]);
+                    currentButtonNo--;
+                }
+            }
+            zeroButton = new Button();
+            zeroButton.SetBounds(1 * cell_size, 4 * cell_size, cell_size, cell_size);
+            zeroButton.Text = "0";
+            zeroButton.Click += new EventHandler(this.numberButtonClicked);
+            Controls.Add(zeroButton);
+
+            enterButton = new Button();
+            enterButton.SetBounds(2 * cell_size, 4 * cell_size, cell_size, cell_size);
+            enterButton.Text = "Enter";
+            enterButton.Click += new EventHandler(this.enterButtonClicked);
+            enterButton.BackColor = Color.Green;
+            Controls.Add(enterButton);
+
+            cancelButton = new Button();
+            cancelButton.SetBounds(3 * cell_size, 4 * cell_size, cell_size, cell_size);
+            cancelButton.Text = "Cancel";
+            cancelButton.BackColor = Color.Red;
+            Controls.Add(cancelButton);
         }
     }
 }
