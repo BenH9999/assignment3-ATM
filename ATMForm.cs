@@ -1,10 +1,23 @@
+using System.Windows.Forms;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace assignment3_ATM
 {
     public partial class ATMForm : Form
     {
-        private Account[] ac = new Account[3];
+        public enum state
+        {
+            choosing_account,
+            entering_pin,
+            options,
+            getting_withdraw_amount,
+            display_balance
+        }
+
+        private state currentState;
+
+        private Account activeAccount = null;
+
         private ATM atm;
         private Thread atmThread;
 
@@ -18,10 +31,13 @@ namespace assignment3_ATM
         Button cancelButton = new Button();
         int currentButtonNo;
         
-        public ATMForm()
+        public ATMForm(ATM atm)
         {
             InitializeComponent();
             addControls();
+
+            currentState = state.choosing_account;
+            this.atm = atm;
 
             this.lblExtra.Text = "";
             this.lblInput.Text = "";
@@ -33,11 +49,7 @@ namespace assignment3_ATM
             isEnterButtonClicked = false;
             isCancelButtonClicked = false;
 
-            ac[0] = new Account(300, 1111, 111111);
-            ac[1] = new Account(750, 2222, 222222);
-            ac[2] = new Account(3000, 3333, 333333);
-
-            atm = new ATM(ac,this);
+            //atm = new ATM(ac,this);
             atmThread = new Thread(this.mainATMLoop);
             atmThread.Start();
         }
@@ -46,9 +58,160 @@ namespace assignment3_ATM
         {
             while (true)
             {
-                atm.runATM();
+                runATM();
                 Thread.Sleep(200);
             }
+        }
+
+        public void runATM()
+        {
+            switch (this.getCurrentState())
+            {
+                case state.choosing_account:
+                    {
+                        setInstructionLabel("Enter your account number..");
+                        if (isEnterButtonClicked)
+                        {
+                            activeAccount = atm.findAccount(getCurrentInput());
+                            if (activeAccount != null)
+                            {
+                                isEnterButtonClicked = false;
+                                this.setCurrentState(state.entering_pin);
+                            }
+                            else
+                            {
+                                setInstructionLabel("no matching account found");
+                            }
+                            clearInputLabel();
+                        }
+                        break;
+                    }
+                case state.entering_pin:
+                    {
+                        setInstructionLabel("Enter pin: ");
+                        if (isEnterButtonClicked)
+                        {
+                            if (activeAccount.checkPin(this.promptForPin()))
+                            {
+                                setInstructionLabel("correct");
+                                isEnterButtonClicked = false;
+                                this.setCurrentState(state.options);
+                            }
+                            else
+                            {
+                                setInstructionLabel("incorrect pin");
+                            }
+                            clearInputLabel();
+                        }
+                        break;
+                    }
+                case state.options:
+                    {
+                        setInstructionLabel("Options:");
+                        setInstructionLabel2("1> take out cash");
+                        setInstructionLabel3("2> balance");
+                        setInstructionLabel4("3> return card");
+                        if (isEnterButtonClicked)
+                        {
+                            processOptions();
+                        }
+                        break;
+                    }
+                case state.getting_withdraw_amount:
+                    {
+                        setInstructionLabel("Withdraw:");
+                        setInstructionLabel2("1> 10");
+                        setInstructionLabel3("2> 50");
+                        setInstructionLabel4("3> 500");
+                        if (isEnterButtonClicked)
+                        {
+                            clearAllLabels();
+                            withdraw();
+                        }
+                        break;
+                    }
+                case state.display_balance:
+                    {
+                        setExtra("Your current balance is: " + activeAccount.getBalance());
+                        currentState = state.options;
+                        isEnterButtonClicked = false;
+                        break;
+                    }
+            }
+        }
+
+        private void processOptions()
+        {
+            int input = getCurrentInput();
+
+            if (input == 1)
+            {
+                currentState = state.getting_withdraw_amount;
+            }
+            else if (input == 2)
+            {
+                currentState = state.display_balance;
+            }
+            else if (input == 3)
+            {
+                clearAllLabels();
+                currentState = state.choosing_account;
+            }
+            else
+            {
+
+            }
+            clearInputLabel();
+            isEnterButtonClicked = false;
+        }
+
+        private void withdraw()
+        {
+            bool decrementPossible = false;
+            int input = getCurrentInput();
+
+            if (input > 0 && input < 4)
+            {
+                if (input == 1)
+                {
+                    if (activeAccount.decrementBalance(10))
+                    {
+                        decrementPossible = true;
+                    }
+                }
+                else if (input == 2)
+                {
+                    if (activeAccount.decrementBalance(50))
+                    {
+                        decrementPossible = true;
+                    }
+                }
+                else if (input == 3)
+                {
+                    if (activeAccount.decrementBalance(500))
+                    {
+                        decrementPossible = true;
+                    }
+                }
+            }
+
+            if (decrementPossible)
+            {
+                setExtra("new balance " + activeAccount.getBalance());
+            }
+            else
+            {
+                setInstructionLabel("insufficient funds");
+            }
+            currentState = state.options;
+            clearInputLabel();
+            isEnterButtonClicked = false;
+        }
+
+        private int promptForPin()
+        {
+            int pinNumberEntered = getCurrentInput();
+            return pinNumberEntered;
         }
 
         public void numberButtonClicked(object sender, EventArgs e)
@@ -148,6 +311,16 @@ namespace assignment3_ATM
             {
                 lblInstruction4.Text = text;
             });
+        }
+
+        public state getCurrentState()
+        {
+            return this.currentState;
+        }
+
+        public void setCurrentState(state state)
+        {
+            this.currentState = state;
         }
 
         private void addControls()

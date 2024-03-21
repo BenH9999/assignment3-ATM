@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace assignment3_ATM
 {
-    internal class Account
+    public class Account
     {
         private int balance;
         private int pin;
