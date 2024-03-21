@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.lblCurrentAccount = new System.Windows.Forms.Label();
             this.lblInstruction = new System.Windows.Forms.Label();
             this.lblInput = new System.Windows.Forms.Label();
             this.lblInstruction2 = new System.Windows.Forms.Label();
@@ -36,16 +35,6 @@
             this.lblInstruction4 = new System.Windows.Forms.Label();
             this.lblExtra = new System.Windows.Forms.Label();
             this.SuspendLayout();
-            // 
-            // lblCurrentAccount
-            // 
-            this.lblCurrentAccount.AutoSize = true;
-            this.lblCurrentAccount.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblCurrentAccount.Location = new System.Drawing.Point(487, 9);
-            this.lblCurrentAccount.Name = "lblCurrentAccount";
-            this.lblCurrentAccount.Size = new System.Drawing.Size(126, 21);
-            this.lblCurrentAccount.TabIndex = 0;
-            this.lblCurrentAccount.Text = "Current Account:";
             // 
             // lblInstruction
             // 
@@ -118,7 +107,6 @@
             this.Controls.Add(this.lblInstruction2);
             this.Controls.Add(this.lblInput);
             this.Controls.Add(this.lblInstruction);
-            this.Controls.Add(this.lblCurrentAccount);
             this.Name = "ATMForm";
             this.Text = "Form1";
             this.ResumeLayout(false);
@@ -127,8 +115,6 @@
         }
 
         #endregion
-
-        private Label lblCurrentAccount;
         private Label lblInstruction;
         private Label lblInput;
         private Label lblInstruction2;

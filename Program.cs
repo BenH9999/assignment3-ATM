@@ -11,13 +11,16 @@ namespace assignment3_ATM
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
+            //Application.Run();
             makeForms();
         }
 
         private static void makeForms()
         {
-            Thread atmForm1 = new Thread(() => Application.Run(new ATMForm()));
-            Thread atmForm2 = new Thread(() => Application.Run(new ATMForm()));
+            ATM atm= new ATM();
+
+            Thread atmForm1 = new Thread(() => Application.Run(new ATMForm(atm)));
+            Thread atmForm2 = new Thread(() => Application.Run(new ATMForm(atm)));
             atmForm1.Start();
             atmForm2.Start();
         }
