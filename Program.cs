@@ -17,8 +17,12 @@ namespace assignment3_ATM
 
         private static void makeForms()
         {
+            //atm object
             ATM atm= new ATM();
 
+            /*
+             * creating both threads for both forms to run simultaneously
+             */
             Thread atmForm1 = new Thread(() => Application.Run(new ATMForm(atm)));
             Thread atmForm2 = new Thread(() => Application.Run(new ATMForm(atm)));
             atmForm1.Start();
