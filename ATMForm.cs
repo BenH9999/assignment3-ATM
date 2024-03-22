@@ -88,7 +88,7 @@ namespace assignment3_ATM
             {
                 case state.choosing_account:
                     {
-                        clearAllLabels();
+                        if (lblExtra.Text != "") clearAllLabels();
                         setInstructionLabel("Enter your account number..");
                         if (isEnterButtonClicked)
                         {
@@ -117,9 +117,10 @@ namespace assignment3_ATM
                             isCancelButtonClicked = false;
                             setExtra("Returning card..");
                             Thread.Sleep(800);
+                            clearAllLabels();
                             currentState = state.choosing_account;
                         }
-                        clearAllLabels();
+                        if (lblExtra.Text != "") clearAllLabels();
                         setInstructionLabel("Enter pin: ");
                         /*
                          * check if enter button is clicked and carry out
@@ -152,9 +153,10 @@ namespace assignment3_ATM
                             isCancelButtonClicked = false;
                             setExtra("Returning card..");
                             Thread.Sleep(800);
+                            clearAllLabels();
                             currentState = state.choosing_account;
                         }
-                        clearAllLabels();
+                        if (lblExtra.Text != "") clearAllLabels();
                         setInstructionLabel("Options:");
                         setInstructionLabel2("1> take out cash");
                         setInstructionLabel3("2> balance");
@@ -180,6 +182,7 @@ namespace assignment3_ATM
                             isCancelButtonClicked = false;
                             setExtra("Returning card..");
                             Thread.Sleep(800);
+                            clearAllLabels();
                             currentState = state.choosing_account;
                         }
                         setInstructionLabel("Withdraw:");
@@ -289,6 +292,7 @@ namespace assignment3_ATM
             if (decrementPossible)
             {
                 setExtra("new balance " + activeAccount.getBalance());
+                Thread.Sleep(800);
             }
             else
             {
