@@ -12,6 +12,10 @@ namespace assignment3_ATM
         private int pin;
         private int accountNum;
 
+        /*
+         * account constructor that passes in current balance,
+         * pin and account number for initialisation
+         */
         public Account(int balance, int pin, int accountNum)
         {
             this.balance = balance;
@@ -19,6 +23,9 @@ namespace assignment3_ATM
             this.accountNum = accountNum;
         }
 
+        /*
+         * balance getter and setter
+         */
         public int getBalance()
         {
             return balance;
@@ -28,6 +35,11 @@ namespace assignment3_ATM
             this.balance = newBalance;
         }
 
+        /*
+         * checks if program can decrement, returns false if cannot
+         * and returns true along with carrying out the operation
+         * if true
+         */
         public Boolean decrementBalance(int amount)
         {
             if(this.balance >amount)
@@ -41,6 +53,9 @@ namespace assignment3_ATM
             }
         }
 
+        /*
+         * check pin, returns true/false depending if valid
+         */
         public Boolean checkPin(int pinEntered)
         {
             if(pinEntered == pin)
@@ -53,6 +68,9 @@ namespace assignment3_ATM
             }
         }
 
+        /*
+         * account number getter
+         */
         public int getAccountNum()
         {
             return accountNum;
